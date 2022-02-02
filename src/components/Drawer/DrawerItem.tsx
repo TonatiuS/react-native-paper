@@ -76,15 +76,23 @@ const DrawerItem = ({
   right,
   ...rest
 }: Props) => {
-  const { colors } = theme;
+  const { colors, roundness, isV3, md } = theme;
+
   const backgroundColor = active
-    ? color(colors?.primary).alpha(0.12).rgb().string()
+    ? isV3
+      ? (md('md.sys.color.secondary-container') as string)
+      : color(colors?.primary).alpha(0.12).rgb().string()
     : 'transparent';
   const contentColor = active
-    ? colors?.primary
+    ? isV3
+      ? (md('md.sys.color.on-secondary-container') as string)
+      : colors?.primary
+    : isV3
+    ? (md('md.sys.color.on-surface-variant') as string)
     : color(colors?.text).alpha(0.68).rgb().string();
+
   const font = theme.fonts.medium;
-  const labelMargin = icon ? 12 : 0;
+  const labelMargin = icon ? (isV3 ? 12 : 32) : 0;
 
   return (
     <View {...rest}>
@@ -92,7 +100,12 @@ const DrawerItem = ({
         borderless
         delayPressIn={0}
         onPress={onPress}
-        style={[styles.container, { backgroundColor, borderRadius: 28 }, style]}
+        style={[
+          styles.container,
+          { backgroundColor, borderRadius: isV3 ? 28 : roundness },
+          isV3 && styles.v3Container,
+          style,
+        ]}
         // @ts-expect-error We keep old a11y props for backwards compat with old RN versions
         accessibilityTraits={active ? ['button', 'selected'] : 'button'}
         accessibilityComponentType="button"
@@ -100,12 +113,13 @@ const DrawerItem = ({
         accessibilityState={{ selected: active }}
         accessibilityLabel={accessibilityLabel}
       >
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, isV3 && styles.v3Wrapper]}>
           <View style={styles.content}>
             {icon ? (
               <Icon source={icon} size={24} color={contentColor} />
             ) : null}
             <Text
+              {...(isV3 && { variant: 'label-large' })}
               selectable={false}
               numberOfLines={1}
               style={[
@@ -121,9 +135,7 @@ const DrawerItem = ({
             </Text>
           </View>
 
-          <View style={styles.rightContent}>
-            {right?.({ color: contentColor || black })}
-          </View>
+          {right?.({ color: contentColor || black })}
         </View>
       </TouchableRipple>
     </View>
@@ -134,16 +146,25 @@ DrawerItem.displayName = 'Drawer.Item';
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: 10,
+    marginVertical: 4,
+  },
+  v3Container: {
     justifyContent: 'center',
     height: 56,
     marginLeft: 12,
     marginRight: 12,
+    marginVertical: 0,
   },
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 8,
+  },
+  v3Wrapper: {
     marginLeft: 16,
     marginRight: 24,
+    padding: 0,
   },
   content: {
     flex: 1,
@@ -152,9 +173,6 @@ const styles = StyleSheet.create({
   },
   label: {
     marginRight: 32,
-  },
-  rightContent: {
-    // paddingLeft: 12,
   },
 });
 

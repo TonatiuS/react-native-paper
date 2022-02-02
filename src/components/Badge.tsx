@@ -71,6 +71,7 @@ const Badge = ({
   const {
     animation: { scale },
   } = theme;
+  const { isV3, md } = theme;
 
   React.useEffect(() => {
     // Do not run animation on very first rendering
@@ -86,8 +87,12 @@ const Badge = ({
     }).start();
   }, [visible, opacity, scale]);
 
-  const { backgroundColor = theme.colors?.notification, ...restStyle } =
-    (StyleSheet.flatten(style) || {}) as TextStyle;
+  const {
+    backgroundColor = isV3
+      ? (md('md.sys.color.error') as string)
+      : theme.colors?.notification,
+    ...restStyle
+  } = (StyleSheet.flatten(style) || {}) as TextStyle;
 
   const textColor = getContrastingColor(backgroundColor || white, white, black);
 

@@ -5,6 +5,7 @@ import Text from '../Typography/Text';
 import Divider from '../Divider';
 import { withTheme } from '../../core/theming';
 import type { Theme } from '../../types';
+import { tokens } from '../../styles/themes/v3/tokens';
 
 type Props = React.ComponentPropsWithRef<typeof View> & {
   /**
@@ -60,24 +61,38 @@ type Props = React.ComponentPropsWithRef<typeof View> & {
  * ```
  */
 const DrawerSection = ({ children, title, theme, style, ...rest }: Props) => {
-  const { colors, fonts } = theme;
-  const titleColor = color(colors?.text).alpha(0.54).rgb().string();
+  const { colors, fonts, isV3, md } = theme;
+  const titleColor = isV3
+    ? (md('md.sys.color.on-surface-variant') as string)
+    : color(colors?.text).alpha(0.54).rgb().string();
   const font = fonts.medium;
 
   return (
     <View style={[styles.container, style]} {...rest}>
       {title && (
-        <View style={styles.titleContainer}>
-          <Text
-            numberOfLines={1}
-            style={[{ color: titleColor, ...font }, styles.title]}
-          >
-            {title}
-          </Text>
+        <View style={[styles.titleContainer, isV3 && styles.v3TitleContainer]}>
+          {title && (
+            <Text
+              {...(isV3 && {
+                variant: 'title-small',
+              })}
+              numberOfLines={1}
+              style={[
+                { color: titleColor, ...font },
+                styles.title,
+                isV3 && styles.v3Title,
+              ]}
+            >
+              {title}
+            </Text>
+          )}
         </View>
       )}
       {children}
-      <Divider bold insets style={styles.divider} />
+      <Divider
+        {...(isV3 && { insets: true, bold: true })}
+        style={isV3 ? styles.v3Divider : styles.divider}
+      />
     </View>
   );
 };
@@ -89,14 +104,23 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   titleContainer: {
-    height: 56,
+    height: 40,
     justifyContent: 'center',
   },
+  v3TitleContainer: {
+    height: 56,
+  },
   title: {
+    marginLeft: 16,
+  },
+  v3Title: {
     marginLeft: 28,
   },
   divider: {
-    // marginTop: 4,
+    marginTop: 4,
+  },
+  v3Divider: {
+    backgroundColor: tokens.md.ref.palette['neutral-variant50'],
   },
 });
 
