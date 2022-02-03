@@ -154,9 +154,7 @@ const DrawerItems = ({
           <Drawer.Section title="Preferences">
             <TouchableRipple onPress={toggleTheme}>
               <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text {...(isV3 && { variant: 'label-large' })}>
-                  Dark Theme
-                </Text>
+                <Text variant="label-large">Dark Theme</Text>
                 <View pointerEvents="none">
                   <Switch value={isDarkTheme} />
                 </View>
@@ -165,7 +163,7 @@ const DrawerItems = ({
 
             <TouchableRipple onPress={_handleToggleRTL}>
               <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text {...(isV3 && { variant: 'label-large' })}>RTL</Text>
+                <Text variant="label-large">RTL</Text>
                 <View pointerEvents="none">
                   <Switch value={isRTL} />
                 </View>
@@ -174,9 +172,7 @@ const DrawerItems = ({
 
             <TouchableRipple onPress={toggleThemeVersion}>
               <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text {...(isV3 && { variant: 'label-large' })}>
-                  Switch back to Material 2
-                </Text>
+                <Text variant="label-large">Switch back to Material 2</Text>
                 <View pointerEvents="none">
                   <Switch value={!isV3} />
                 </View>
@@ -186,9 +182,7 @@ const DrawerItems = ({
             {isV3 && (
               <TouchableRipple onPress={toggleCollapsed}>
                 <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                  <Text {...(isV3 && { variant: 'label-large' })}>
-                    Collapsed drawer
-                  </Text>
+                  <Text variant="label-large">Collapsed drawer</Text>
                   <View pointerEvents="none">
                     <Switch value={collapsed} />
                   </View>
