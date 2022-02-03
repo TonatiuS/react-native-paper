@@ -97,7 +97,7 @@ const AnimatedFABExample = () => {
         </View>
       );
     },
-    [visible]
+    [visible, isV3]
   );
 
   const onScroll = ({
@@ -138,14 +138,7 @@ const AnimatedFABExample = () => {
               : colors?.background,
           },
         ]}
-        contentContainerStyle={[
-          styles.container,
-          {
-            backgroundColor: isV3
-              ? (md('md.sys.color.background') as string)
-              : colors?.background,
-          },
-        ]}
+        contentContainerStyle={styles.container}
         onScroll={onScroll}
       />
 
