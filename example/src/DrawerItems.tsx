@@ -48,13 +48,7 @@ const DrawerItemsData = [
     label: 'A very long title that will be truncated',
     icon: 'delete',
     key: 4,
-    right: ({ color }: { color: string }) => (
-      <Badge
-        visible
-        size={8}
-        style={[styles.badge, { backgroundColor: color }]}
-      />
-    ),
+    right: () => <Badge visible size={8} style={styles.badge} />,
   },
 ];
 
